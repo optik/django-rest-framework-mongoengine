@@ -181,7 +181,6 @@ class ObjectIdField(DocumentField):
         try:
             return ObjectId(str(data) if PY3 else unicode(data))
         except Exception as e:
-            print(e)
             raise serializers.ValidationError(e.message)
 
 
