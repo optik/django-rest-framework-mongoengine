@@ -3,6 +3,7 @@ from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from bson.py3compat import PY3
 from bson.errors import InvalidId
 
 from mongoengine import dereference
@@ -178,8 +179,9 @@ class ObjectIdField(DocumentField):
 
     def to_internal_value(self, data):
         try:
-            return ObjectId(unicode(data))
+            return ObjectId(str(data) if PY3 else unicode(data))
         except Exception as e:
+            print(e)
             raise serializers.ValidationError(e.message)
 
 
